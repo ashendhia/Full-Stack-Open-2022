@@ -29,14 +29,25 @@ const Form = ({ persons, setPersons, notification, setNotification }) => {
       }
 
     if (!exists) {
-      personService.
-        create(newPerson).
-        then
-        (returnedPerson => {
+      personService
+        .create(newPerson)
+        .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNotification({
             type: 'green',
             message: `Added ${newPerson.name}`
+          })
+          setTimeout(() => {
+            setNotification({
+              type: null,
+              message: ''
+            })
+          }, 5000)
+        })
+        .catch(error => {
+          setNotification({
+            type: 'red',
+            message: String(error.response.data.error)
           })
           setTimeout(() => {
             setNotification({
